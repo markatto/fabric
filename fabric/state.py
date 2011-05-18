@@ -203,7 +203,15 @@ env_options = [
         action='store_false',
         default=True,
         help="do not use pseudo-terminal in run/sudo"
-    )
+    ),
+
+    # Keepalive
+    make_option('--keepalive',
+        dest='keepalive',
+        type=int,
+        default=0,
+        help="enables a keepalive every n seconds"
+    ),
     
 ]
 
