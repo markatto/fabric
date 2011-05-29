@@ -37,6 +37,8 @@ def rsync_project(remote_dir, local_dir=None, exclude=(), delete=False,
       created inside this directory. For example, if one's project directory is
       named ``myproject`` and one invokes ``rsync_project('/home/username/')``,
       the resulting project directory will be ``/home/username/myproject/``.
+      If the ``local_dir`` parameter contains a trailing slash, this argument
+      will instead specify the **actual target directory.** (not the parent)
     * ``local_dir``: by default, ``rsync_project`` uses your current working
       directory as the source directory; you may override this with
       ``local_dir``, which should be a directory path.
