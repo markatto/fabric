@@ -266,7 +266,8 @@ Here's a brief and somewhat contrived example to make this obvious::
     from fabric.tasks import Task
 
     class CustomTask(Task):
-        def __init__(self, func, myarg):
+        def __init__(self, func, myarg, *args, **kwargs):
+            super(CustomTask, self).__init__(*args, **kwargs)
             self.func = func
             self.myarg = myarg
 
@@ -279,11 +280,7 @@ Here's a brief and somewhat contrived example to make this obvious::
 
 When this fabfile is loaded, a copy of ``CustomTask`` is instantiated, effectively calling::
 
-    task_obj = CustomTask(actual_task, myarg='value')
-
-Note how the ``alias`` kwarg is stripped out by the decorator itself and never
-reaches the class instantiation; this is identical in function to how
-:ref:`command-line task arguments <task-arguments>` work.
+    task_obj = CustomTask(actual_task, myarg='value', alias='at')
 
 .. _namespaces:
 
