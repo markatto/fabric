@@ -162,6 +162,7 @@ def execute(task, *args, **kwargs):
     .. versionadded:: 1.3
     """
     my_env = {}
+    results = {}
     # Obtain task
     if not callable(task):
         # Assume string, set env.command to it
@@ -232,7 +233,8 @@ or that the above ImportError is fixed.""")
                 jobs.append(p)
             # Handle serial execution
             else:
-                task.run(*args, **new_kwargs)
+                host_string = local_env['host_string']
+                results[host_string] = task.run(*args, **new_kwargs)
 
         # If running in parallel, block until job queue is emptied
         if jobs:
@@ -245,7 +247,14 @@ or that the above ImportError is fixed.""")
                     my_env['command']
                 ))
 
+        # We don't currently track return values for parallel
+        # execution, we just return None
+        return results if results else None
+
     # Or just run once for local-only
     else:
         state.env.update(my_env)
-        task.run(*args, **new_kwargs)
+        # It seems like we should really return a dict here to be consistent
+        # with the return value for serial execution on multiple hosts,
+        # however it is unclear what the key would be. 
+        return task.run(*args, **new_kwargs)
